@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/logo.png" alt="LANCAST Logo" width="72" height="72" />
+<img src="public/logo.png" alt="LANCAST Logo" width="92" height="92" />
 
 # LANCAST
 
@@ -12,6 +12,10 @@
 [![React](https://img.shields.io/badge/React-18-61dafb?style=flat-square&logo=react&logoColor=white)](https://react.dev)
 [![Rust](https://img.shields.io/badge/Rust-1.80+-f74c00?style=flat-square&logo=rust&logoColor=white)](https://www.rust-lang.org)
 [![Encryption](https://img.shields.io/badge/Encryption-AES--256--GCM-22c55e?style=flat-square&logo=letsencrypt&logoColor=white)](https://en.wikipedia.org/wiki/Galois/Counter_Mode)
+
+<a href="https://www.sambhavdwivedi.in">
+   <img src="https://img.shields.io/badge/Developer-Sambhav%20Dwivedi-0A66C2.svg?style=flat-square" alt="AI-Engineer" />
+</a>
 
 </div>
 

@@ -56,5 +56,6 @@ coverage/
 release/
 build/
 text/
+.github/
 
 .tauri/
