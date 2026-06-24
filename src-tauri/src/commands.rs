@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use tauri::{AppHandle, State, Window};
 use uuid::Uuid;
+use tauri::Emitter;
 
 use crate::events;
 use crate::AppState;

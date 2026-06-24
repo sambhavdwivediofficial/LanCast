@@ -63,7 +63,7 @@ fn main() {
             let peer_clone = Arc::clone(&peer_registry);
             let name_clone = Arc::clone(&local_name);
 
-            tokio::spawn(async move {
+            tauri::async_runtime::spawn(async move {
                 tcp_clone.start_listener(handle, peer_clone, name_clone).await;
             });
 

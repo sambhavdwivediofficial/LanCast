@@ -85,6 +85,10 @@ impl PeerRegistry {
             peer.last_seen = now;
         }
     }
+
+    pub async fn clear_all(&self) {
+        self.peers.clear();
+    }
 }
 
 impl Default for PeerRegistry {

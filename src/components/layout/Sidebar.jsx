@@ -195,20 +195,20 @@ export default function Sidebar() {
 
   return (
     <motion.nav
-      animate={{ width: collapsed ? 64 : 240 }}
+      animate={{ width: collapsed ? 64 : 180 }}
       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
       className="sidebar flex-shrink-0"
-      style={{ minWidth: collapsed ? 64 : 240 }}
+      style={{ minWidth: collapsed ? 64 : 180 }}
     >
       <div className="flex flex-col h-full">
         <div
           className="flex items-center justify-between px-3 py-4 border-b border-surface-800"
-          style={{ height: 60, flexShrink: 0 }}
+          style={{ height: 50, flexShrink: 0 }}
         >
           {!collapsed ? (
             <>
               <div className="flex items-center gap-2">
-                <img src={logo} alt="LANCAST" className="w-7 h-7 rounded-lg flex-shrink-0" />
+                <img src={logo} alt="LANCAST" className="w-11 h-11 rounded-lg flex-shrink-0" />
                 <span className="text-lg font-extrabold text-white tracking-wide select-none">
                   LANCAST
                 </span>
@@ -230,17 +230,17 @@ export default function Sidebar() {
               <img
                 src={logo}
                 alt="LANCAST"
-                className="absolute w-7 h-7 rounded-lg pointer-events-none opacity-100 group-hover:opacity-0 transition-opacity duration-150"
+                className="absolute w-9 h-9 rounded-lg pointer-events-none opacity-100 group-hover:opacity-0 transition-opacity duration-150"
               />
               <ChevronRight
-                size={18}
+                size={22}
                 className="absolute text-surface-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
               />
             </button>
           )}
         </div>
 
-        <div className="flex flex-col gap-0.5 px-2 py-3 flex-1 overflow-y-auto no-scrollbar">
+        <div className="flex flex-col gap-2 px-2 py-3 flex-1 overflow-y-auto no-scrollbar">
           {NAV_ITEMS.map((item) => (
             <div key={item.id} className="relative">
               <NavItem
@@ -261,7 +261,7 @@ export default function Sidebar() {
           ))}
         </div>
 
-        <div className="flex flex-col gap-0.5 px-2 pb-3 border-t border-surface-800 pt-2">
+        <div className="flex flex-col gap-2 px-2 pb-3 border-surface-800 pt-2">
           <KillButton collapsed={collapsed} />
           <BroadcastButton collapsed={collapsed} />
         </div>

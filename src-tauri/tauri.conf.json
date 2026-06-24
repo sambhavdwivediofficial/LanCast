@@ -28,7 +28,8 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: asset: https://asset.localhost; connect-src ipc: http://ipc.localhost"
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: asset: https://asset.localhost; connect-src ipc: http://ipc.localhost",
+      "capabilities": ["default"]
     }
   },
   "bundle": {
@@ -45,6 +46,7 @@
     "category": "Utility",
     "shortDescription": "Encrypted LAN communication",
     "longDescription": "Instant, end-to-end encrypted communication between devices on the same Wi-Fi network. Zero cloud. Zero servers. Zero accounts. Zero traces.",
+    "publisher": "Sambhav Dwivedi",
     "windows": {
       "digestAlgorithm": "sha256",
       "nsis": {

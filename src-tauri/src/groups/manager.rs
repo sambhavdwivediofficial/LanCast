@@ -113,6 +113,10 @@ impl GroupManager {
     pub fn public_group_count(&self) -> usize {
         self.groups.values().filter(|g| !g.is_private).count()
     }
+
+    pub fn wipe_all(&mut self) {
+        self.groups.clear();
+    }
 }
 
 impl Default for GroupManager {

@@ -165,6 +165,11 @@ impl SessionRegistry {
     pub fn active_count(&self) -> usize {
         self.sessions.len()
     }
+
+    pub fn wipe_all(&self) {
+        self.sessions.clear();
+        self.pending.clear();
+    }
 }
 
 impl Default for SessionRegistry {

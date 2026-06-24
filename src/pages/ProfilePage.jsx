@@ -68,10 +68,6 @@ export default function ProfilePage() {
     >
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,102,241,0.12) 0%, transparent 70%)",
-        }}
       />
 
       <div className="flex flex-col flex-1 items-center justify-center px-6 relative z-10">
@@ -82,10 +78,10 @@ export default function ProfilePage() {
               initial={{ opacity: 0, scale: 0.7 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="flex items-center gap-3 mb-8"
+              className="flex items-center -gap-20 mb-8"
             >
-              <img src={logo} alt="LANCAST" className="w-12 h-12 rounded-2xl" style={{ boxShadow: "0 0 32px rgba(99,102,241,0.3)" }} />
-              <span className="text-3xl font-extrabold text-white tracking-wide">LANCAST</span>
+              <img src={logo} alt="LANCAST" className="w-14 h-14" />
+              <span className="text-4xl font-extrabold text-white tracking-wide">ANCAST</span>
             </motion.div>
           )}
         </AnimatePresence>
@@ -154,12 +150,12 @@ export default function ProfilePage() {
                     className="input-base pr-12"
                     placeholder="Your name…"
                     value={name}
-                    maxLength={32}
+                    maxLength={15}
                     onChange={(e) => { setName(e.target.value); setError(""); }}
                     onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-2xs text-surface-600">
-                    {name.length}/32
+                    {name.length}/15
                   </span>
                 </div>
 
@@ -219,7 +215,7 @@ export default function ProfilePage() {
                     title={l.label}
                     className="p-1.5 rounded-lg text-surface-600 hover:text-surface-300 hover:bg-surface-800 transition-colors"
                   >
-                    <l.icon size={13} />
+                    <l.icon size={15} />
                   </button>
                 ))}
               </div>
