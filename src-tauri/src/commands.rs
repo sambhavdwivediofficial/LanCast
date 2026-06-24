@@ -4,7 +4,6 @@ use tauri::{AppHandle, State, Window};
 use uuid::Uuid;
 
 use crate::events;
-use crate::groups::invite::InviteResponse;
 use crate::AppState;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -89,11 +88,19 @@ pub struct CommandResult<T: Serialize> {
 
 impl<T: Serialize> CommandResult<T> {
     pub fn ok(data: T) -> Self {
-        Self { success: true, data: Some(data), error: None }
+        Self {
+            success: true,
+            data: Some(data),
+            error: None,
+        }
     }
 
     pub fn err(msg: impl Into<String>) -> Self {
-        Self { success: false, data: None, error: Some(msg.into()) }
+        Self {
+            success: false,
+            data: None,
+            error: Some(msg.into()),
+        }
     }
 }
 
@@ -119,9 +126,7 @@ pub async fn set_local_name(
 }
 
 #[tauri::command]
-pub async fn get_local_name(
-    state: State<'_, AppState>,
-) -> Result<CommandResult<String>, String> {
+pub async fn get_local_name(state: State<'_, AppState>) -> Result<CommandResult<String>, String> {
     let name = state.local_name.read().await.clone();
     Ok(CommandResult::ok(name))
 }
@@ -213,13 +218,14 @@ pub async fn send_message(
 
 #[tauri::command]
 pub async fn send_file_chunk(
-    app: AppHandle,
+    _app: AppHandle,
     payload: FileChunkDto,
     state: State<'_, AppState>,
 ) -> Result<CommandResult<bool>, String> {
+    let peer_id = payload.peer_id.clone();
     let result = state
         .tcp_service
-        .send_file_chunk(&payload.peer_id, payload.into())
+        .send_file_chunk(&peer_id, payload.into())
         .await;
 
     match result {
@@ -262,7 +268,9 @@ pub async fn join_group(
     let local_name = state.local_name.read().await.clone();
     let peer_id = {
         let peers = state.peer_registry.get_by_name(&local_name).await;
-        peers.map(|p| p.id).unwrap_or_else(|| Uuid::new_v4().to_string())
+        peers
+            .map(|p| p.id)
+            .unwrap_or_else(|| Uuid::new_v4().to_string())
     };
 
     let mut manager = state.group_manager.write().await;
@@ -394,11 +402,7 @@ pub async fn respond_to_invite(
         let peer_id = Uuid::new_v4().to_string();
         let mut manager = state.group_manager.write().await;
 
-        let _ = manager.join_group(
-            &payload.group_id,
-            peer_id.clone(),
-            local_name.clone(),
-        );
+        let _ = manager.join_group(&payload.group_id, peer_id.clone(), local_name.clone());
 
         events::emit_group_member_joined(
             &app,

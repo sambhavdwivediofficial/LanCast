@@ -29,12 +29,6 @@
     ],
     "security": {
       "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: asset: https://asset.localhost; connect-src ipc: http://ipc.localhost"
-    },
-    "trayIcon": {
-      "iconPath": "icons/icon.png",
-      "iconAsTemplate": true,
-      "menuOnLeftClick": false,
-      "title": "LANCAST"
     }
   },
   "bundle": {
@@ -47,48 +41,20 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "resources": [],
-    "externalBin": [],
     "copyright": "© 2024 Sambhav Dwivedi",
     "category": "Utility",
     "shortDescription": "Encrypted LAN communication",
     "longDescription": "Instant, end-to-end encrypted communication between devices on the same Wi-Fi network. Zero cloud. Zero servers. Zero accounts. Zero traces.",
-    "linux": {
-      "deb": {
-        "depends": ["libwebkit2gtk-4.1-0", "libssl3"]
-      },
-      "appimage": {
-        "bundleMediaFramework": true
-      }
-    },
-    "macOS": {
-      "minimumSystemVersion": "11.0",
-      "entitlements": null,
-      "exceptionDomain": "",
-      "signingIdentity": null,
-      "providerShortName": null
-    },
     "windows": {
       "digestAlgorithm": "sha256",
-      "certificateThumbprint": null,
-      "timestampUrl": "",
-      "webviewInstallMode": {
-        "type": "embedBootstrapper"
-      },
       "nsis": {
-        "template": null,
-        "license": null,
-        "headerImage": null,
-        "sidebarImage": null,
         "installMode": "perMachine",
-        "languages": ["English"],
-        "customLanguageFiles": null
+        "languages": ["English"]
       }
     }
   },
   "plugins": {
     "shell": {
-      "all": false,
       "open": true
     }
   }

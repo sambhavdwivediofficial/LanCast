@@ -2,7 +2,7 @@ use hkdf::Hkdf;
 use rand::rngs::OsRng;
 use sha2::Sha256;
 use x25519_dalek::{EphemeralSecret, PublicKey, SharedSecret};
-use zeroize::{Zeroize, ZeroizeOnDrop};
+use zeroize::ZeroizeOnDrop;
 
 #[derive(ZeroizeOnDrop)]
 pub struct EcdhSession {
@@ -27,7 +27,10 @@ impl EcdhSession {
         }
     }
 
-    pub fn derive_keys(mut self, their_public_bytes: &[u8; 32]) -> Result<DerivedKeys, &'static str> {
+    pub fn derive_keys(
+        mut self,
+        their_public_bytes: &[u8; 32],
+    ) -> Result<DerivedKeys, &'static str> {
         let their_public = PublicKey::from(*their_public_bytes);
         let secret = self.secret.take().ok_or("Session already consumed")?;
         let shared: SharedSecret = secret.diffie_hellman(&their_public);

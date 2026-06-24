@@ -31,10 +31,14 @@ pub struct AppState {
 }
 
 fn main() {
-    let filter = EnvFilter::try_from_default_env()
-        .unwrap_or_else(|_| EnvFilter::new("lancast=info,warn"));
+    let filter =
+        EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("lancast=info,warn"));
 
-    fmt().with_env_filter(filter).with_target(false).compact().init();
+    fmt()
+        .with_env_filter(filter)
+        .with_target(false)
+        .compact()
+        .init();
 
     info!("LANCAST starting");
 
@@ -43,12 +47,8 @@ fn main() {
         .setup(|app| {
             let peer_registry = Arc::new(PeerRegistry::new());
             let group_manager = Arc::new(RwLock::new(GroupManager::new()));
-            let tcp_service = Arc::new(TcpService::new(
-                Arc::clone(&peer_registry),
-            ));
-            let discovery_service = Arc::new(DiscoveryService::new(
-                Arc::clone(&peer_registry),
-            ));
+            let tcp_service = Arc::new(TcpService::new(Arc::clone(&peer_registry)));
+            let discovery_service = Arc::new(DiscoveryService::new(Arc::clone(&peer_registry)));
             let screenshot_guard = Arc::new(ScreenshotGuard::new());
             let local_name = Arc::new(RwLock::new(String::new()));
             let broadcasting = Arc::new(tokio::sync::RwLock::new(false));
@@ -58,7 +58,7 @@ fn main() {
             let peer_clone = Arc::clone(&peer_registry);
             let name_clone = Arc::clone(&local_name);
 
-            tokio::spawn(async move {
+            tauri::async_runtime::spawn(async move {
                 tcp_clone
                     .start_listener(handle, peer_clone, name_clone)
                     .await;

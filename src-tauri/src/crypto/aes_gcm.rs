@@ -45,7 +45,10 @@ pub fn encrypt_with_aad(
     let cipher = Aes256Gcm::new(key);
     let nonce = Aes256Gcm::generate_nonce(&mut OsRng);
 
-    let payload = Payload { msg: plaintext, aad };
+    let payload = Payload {
+        msg: plaintext,
+        aad,
+    };
     let ciphertext = cipher
         .encrypt(&nonce, payload)
         .map_err(|_| CryptoError::EncryptionFailed)?;
@@ -90,7 +93,10 @@ pub fn decrypt_with_aad(
     let key = Key::<Aes256Gcm>::from_slice(key);
     let cipher = Aes256Gcm::new(key);
 
-    let payload = Payload { msg: actual_ciphertext, aad };
+    let payload = Payload {
+        msg: actual_ciphertext,
+        aad,
+    };
     let plaintext = cipher
         .decrypt(nonce, payload)
         .map_err(|_| CryptoError::DecryptionFailed)?;
