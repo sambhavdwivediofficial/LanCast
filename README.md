@@ -106,42 +106,6 @@ LANCAST is built with a layered security model where every primitive serves a sp
 
 ---
 
-## Getting Started
-
-### Prerequisites
-
-Before you begin, ensure the following are installed:
-
-- [Node.js](https://nodejs.org/) `>=20.0.0`
-- [Rust](https://www.rust-lang.org/tools/install) `>=1.80`
-- [Tauri CLI v2](https://tauri.app/start/prerequisites/) — install via `cargo install tauri-cli --version "^2.0"`
-- On Windows: [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
-- On Linux: `libwebkit2gtk-4.1-dev`, `libssl-dev`, `libayatana-appindicator3-dev`
-
-### Install Dependencies
-
-```bash
-npm install
-```
-
-### Development Mode
-
-```bash
-npm run tauri:dev
-```
-
-This starts the Vite dev server and the Tauri application window simultaneously with hot module reload.
-
-### Production Build
-
-```bash
-npm run tauri:build
-```
-
-Compiled installers are output to `src-tauri/target/release/bundle/`.
-
----
-
 ## How It Works
 
 ### 1. Peer Discovery
