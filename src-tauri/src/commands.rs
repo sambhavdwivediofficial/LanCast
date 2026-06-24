@@ -88,19 +88,11 @@ pub struct CommandResult<T: Serialize> {
 
 impl<T: Serialize> CommandResult<T> {
     pub fn ok(data: T) -> Self {
-        Self {
-            success: true,
-            data: Some(data),
-            error: None,
-        }
+        Self { success: true, data: Some(data), error: None }
     }
 
     pub fn err(msg: impl Into<String>) -> Self {
-        Self {
-            success: false,
-            data: None,
-            error: Some(msg.into()),
-        }
+        Self { success: false, data: None, error: Some(msg.into()) }
     }
 }
 
@@ -126,7 +118,9 @@ pub async fn set_local_name(
 }
 
 #[tauri::command]
-pub async fn get_local_name(state: State<'_, AppState>) -> Result<CommandResult<String>, String> {
+pub async fn get_local_name(
+    state: State<'_, AppState>,
+) -> Result<CommandResult<String>, String> {
     let name = state.local_name.read().await.clone();
     Ok(CommandResult::ok(name))
 }
@@ -268,9 +262,7 @@ pub async fn join_group(
     let local_name = state.local_name.read().await.clone();
     let peer_id = {
         let peers = state.peer_registry.get_by_name(&local_name).await;
-        peers
-            .map(|p| p.id)
-            .unwrap_or_else(|| Uuid::new_v4().to_string())
+        peers.map(|p| p.id).unwrap_or_else(|| Uuid::new_v4().to_string())
     };
 
     let mut manager = state.group_manager.write().await;
@@ -353,7 +345,7 @@ pub async fn send_group_message(
 
 #[tauri::command]
 pub async fn invite_peer_to_group(
-    _app: AppHandle,
+    app: AppHandle,
     payload: InvitePeerDto,
     state: State<'_, AppState>,
 ) -> Result<CommandResult<String>, String> {
@@ -402,7 +394,11 @@ pub async fn respond_to_invite(
         let peer_id = Uuid::new_v4().to_string();
         let mut manager = state.group_manager.write().await;
 
-        let _ = manager.join_group(&payload.group_id, peer_id.clone(), local_name.clone());
+        let _ = manager.join_group(
+            &payload.group_id,
+            peer_id.clone(),
+            local_name.clone(),
+        );
 
         events::emit_group_member_joined(
             &app,
@@ -494,4 +490,97 @@ impl From<FileChunkDto> for crate::network::transfer::FileChunk {
             is_last: dto.is_last,
         }
     }
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct KillResultDto {
+    pub sessions_destroyed: usize,
+    pub peers_cleared: usize,
+    pub groups_cleared: usize,
+}
+
+#[tauri::command]
+pub async fn execute_kill(
+    app: AppHandle,
+    state: State<'_, AppState>,
+) -> Result<CommandResult<KillResultDto>, String> {
+    let result = crate::session_kill::execute_kill(
+        &app,
+        Arc::clone(&state.session_registry),
+        Arc::clone(&state.peer_registry),
+        Arc::clone(&state.group_manager),
+        Arc::clone(&state.local_name),
+        Arc::clone(&state.audit_logger),
+    )
+    .await;
+
+    Ok(CommandResult::ok(KillResultDto {
+        sessions_destroyed: result.sessions_destroyed,
+        peers_cleared: result.peers_cleared,
+        groups_cleared: result.groups_cleared,
+    }))
+}
+
+#[tauri::command]
+pub async fn get_audit_events(
+    limit: Option<usize>,
+    state: State<'_, AppState>,
+) -> Result<CommandResult<Vec<crate::audit::logger::AuditEvent>>, String> {
+    let events = match limit {
+        Some(n) => state.audit_logger.get_recent(n),
+        None => state.audit_logger.get_all(),
+    };
+    Ok(CommandResult::ok(events))
+}
+
+#[tauri::command]
+pub async fn log_audit_event(
+    kind: String,
+    actor: String,
+    target: Option<String>,
+    detail: Option<String>,
+    state: State<'_, AppState>,
+) -> Result<CommandResult<bool>, String> {
+    use crate::audit::logger::AuditEventKind;
+    let event_kind = match kind.as_str() {
+        "screenshot_blocked"  => AuditEventKind::ScreenshotBlocked,
+        "invite_sent"         => AuditEventKind::InviteSent,
+        "invite_accepted"     => AuditEventKind::InviteAccepted,
+        "invite_declined"     => AuditEventKind::InviteDeclined,
+        "file_uploaded"       => AuditEventKind::FileUploaded,
+        "file_downloaded"     => AuditEventKind::FileDownloaded,
+        "broadcast_started"   => AuditEventKind::BroadcastStarted,
+        "broadcast_stopped"   => AuditEventKind::BroadcastStopped,
+        "group_created"       => AuditEventKind::GroupCreated,
+        "group_joined"        => AuditEventKind::GroupJoined,
+        "group_left"          => AuditEventKind::GroupLeft,
+        "message_sent"        => AuditEventKind::MessageSent,
+        "message_received"    => AuditEventKind::MessageReceived,
+        "transfer_started"    => AuditEventKind::TransferStarted,
+        "transfer_completed"  => AuditEventKind::TransferCompleted,
+        "transfer_cancelled"  => AuditEventKind::TransferCancelled,
+        "peer_joined"         => AuditEventKind::PeerJoined,
+        "peer_left"           => AuditEventKind::PeerLeft,
+        _                     => AuditEventKind::MessageSent,
+    };
+    state.audit_logger.log(event_kind, actor, target, detail);
+    Ok(CommandResult::ok(true))
+}
+
+#[tauri::command]
+pub async fn emit_typing(
+    peer_id: String,
+    group_id: Option<String>,
+    state: State<'_, AppState>,
+    app: AppHandle,
+) -> Result<CommandResult<bool>, String> {
+    let local_name = state.local_name.read().await.clone();
+    let _ = app.emit("peer_typing", serde_json::json!({
+        "peerId": peer_id,
+        "name": local_name,
+        "groupId": group_id,
+        "timestamp": now_millis(),
+    }));
+    Ok(CommandResult::ok(true))
 }
