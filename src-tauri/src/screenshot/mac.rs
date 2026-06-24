@@ -3,6 +3,7 @@ mod inner {
     use objc2::rc::Id;
     use objc2_app_kit::{NSWindow, NSWindowSharingType};
     use tauri::Window;
+    use tauri::Manager;
 
     pub fn protect(window: &Window) -> Result<(), String> {
         let ns_window = get_ns_window(window)?;
@@ -21,7 +22,6 @@ mod inner {
     }
 
     fn get_ns_window(window: &Window) -> Result<Id<NSWindow>, String> {
-        use tauri::Manager;
         let ptr = window
             .ns_window()
             .map_err(|e| format!("Failed to get NSWindow: {e}"))?;
@@ -32,12 +32,8 @@ mod inner {
 #[cfg(not(target_os = "macos"))]
 mod inner {
     use tauri::Window;
-
-    pub fn protect(_window: &Window) -> Result<(), String> {
-        Ok(())
-    }
-
-    pub fn unprotect(_window: &Window) -> Result<(), String> {
-        Ok(())
-    }
+    pub fn protect(_window: &Window) -> Result<(), String> { Ok(()) }
+    pub fn unprotect(_window: &Window) -> Result<(), String> { Ok(()) }
 }
+
+pub use inner::{protect, unprotect};
