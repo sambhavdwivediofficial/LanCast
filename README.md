@@ -1,7 +1,7 @@
 <div align="center">
 
 <h1>
-  <img src="public/LanCast.png" alt="LANCAST Logo" width="32" height="32" style="vertical-align: middle; margin-right: 12px;" />
+  <img src="public/LanCast.png" alt="LANCAST Logo" width="40" height="40" style="vertical-align: middle; margin-right: 12px;" />
   ANCAST
 </h1>
 
