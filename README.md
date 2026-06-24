@@ -1,8 +1,11 @@
 <div align="center">
 
-<img src="public/LanCast.png" alt="LANCAST Logo" width="95" height="95" />
+<h1>
+  <img src="public/LanCast.png" alt="LANCAST Logo" width="42" height="42" style="vertical-align: middle; margin-right: 12px;" />
+  LANCAST
+</h1>
 
-# LANCAST
+> **Work in Progress** — *LANCAST is under active development. This repository is public for early access and community feedback. A stable release is coming soon.*
 
 **Broadcast on LAN. Encrypted. Instant. Traceless.**
 
