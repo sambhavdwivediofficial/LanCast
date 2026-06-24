@@ -34,7 +34,7 @@ pub fn split_into_chunks(data: &[u8]) -> Result<Vec<Chunk>, ChunkerError> {
         return Err(ChunkerError::FileTooLarge(data.len() as u64));
     }
 
-    let total = (data.len() + CHUNK_SIZE - 1) / CHUNK_SIZE;
+    let total = data.len().div_ceil(CHUNK_SIZE);
     let mut chunks = Vec::with_capacity(total);
 
     for (i, chunk_data) in data.chunks(CHUNK_SIZE).enumerate() {

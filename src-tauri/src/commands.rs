@@ -353,7 +353,7 @@ pub async fn send_group_message(
 
 #[tauri::command]
 pub async fn invite_peer_to_group(
-    app: AppHandle,
+    _app: AppHandle,
     payload: InvitePeerDto,
     state: State<'_, AppState>,
 ) -> Result<CommandResult<String>, String> {

@@ -44,7 +44,7 @@ pub fn decode_frame(data: &[u8]) -> Result<DiscoveryFrame, MagicError> {
         return Err(MagicError::FrameTooShort(data.len()));
     }
 
-    if &data[..MAGIC.len()] != &MAGIC {
+    if &data[..MAGIC.len()] != MAGIC {
         return Err(MagicError::InvalidMagic);
     }
 
@@ -82,5 +82,5 @@ pub fn decode_frame(data: &[u8]) -> Result<DiscoveryFrame, MagicError> {
 }
 
 pub fn is_lancast_frame(data: &[u8]) -> bool {
-    data.len() >= MAGIC.len() && &data[..MAGIC.len()] == &MAGIC
+    data.len() >= MAGIC.len() && &data[..MAGIC.len()] == MAGIC
 }

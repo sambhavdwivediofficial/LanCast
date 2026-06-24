@@ -2,7 +2,7 @@
 name = "Lancast"
 version = "1.0.0"
 description = "Broadcast on LAN. Encrypted. Instant. Traceless."
-authors = ["Sambhav Dwivedi <sambhav@sambhavdwivedi.in>"]
+authors = ["Sambhav Dwivedi <sambhavdwivedi@outlook.com>"]
 license = "Apache-2.0"
 repository = "https://github.com/sambhavdwivediofficial/lancast"
 edition = "2021"
