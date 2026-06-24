@@ -1,9 +1,8 @@
 <div align="center">
 
-<h1>
-  <img src="public/LanCast.png" alt="LANCAST Logo" width="40" height="40" style="vertical-align: middle; margin-right: 12px;" />
-  ANCAST
-</h1>
+<img src="public/LanCast.png" alt="LANCAST Logo" width="90" height="90" />
+
+# LANCAST
 
 > **Work in Progress** — *LANCAST is under active development. This repository is public for early access and community feedback. A stable release is coming soon.*
 
