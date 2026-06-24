@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/image.png" alt="LANCAST Logo" width="95" height="95" />
+<img src="public/LanCast.png" alt="LANCAST Logo" width="95" height="95" />
 
 # LANCAST
 

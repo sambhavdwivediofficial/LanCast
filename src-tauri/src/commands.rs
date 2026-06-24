@@ -461,20 +461,11 @@ pub async fn get_public_groups(
 
 #[tauri::command]
 pub async fn protect_window(
-    app: AppHandle,
     window: Window,
     state: State<'_, AppState>,
 ) -> Result<CommandResult<bool>, String> {
     match state.screenshot_guard.protect(&window) {
-        Ok(_) => {
-            let payload = events::ScreenshotAttemptPayload {
-                peer_name: state.local_name.read().await.clone(),
-                timestamp: now_millis(),
-                context: "protection_active".into(),
-            };
-            events::emit_screenshot_attempt(&app, payload);
-            Ok(CommandResult::ok(true))
-        }
+        Ok(_) => Ok(CommandResult::ok(true)),
         Err(e) => Ok(CommandResult::err(e)),
     }
 }

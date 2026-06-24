@@ -35,8 +35,14 @@ mod inner {
 #[cfg(not(target_os = "windows"))]
 mod inner {
     use tauri::Window;
-    pub fn protect(_window: &Window) -> Result<(), String> { Ok(()) }
-    pub fn unprotect(_window: &Window) -> Result<(), String> { Ok(()) }
+
+    pub fn protect(_window: &Window) -> Result<(), String> {
+        Ok(())
+    }
+
+    pub fn unprotect(_window: &Window) -> Result<(), String> {
+        Ok(())
+    }
 }
 
 pub use inner::{protect, unprotect};
