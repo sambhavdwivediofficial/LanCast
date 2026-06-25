@@ -310,7 +310,6 @@ export default function GroupPage() {
         <Users size={18} className="text-brand-400" />
         <div className="flex-1">
           <h1 className="text-base font-bold text-surface-100">Groups</h1>
-          <p className="text-2xs text-surface-500">{myGroups.length} groups</p>
         </div>
         <button type="button" onClick={() => setCreateOpen(true)} className="btn-primary px-3 py-2 text-xs">
           <Plus size={14} />

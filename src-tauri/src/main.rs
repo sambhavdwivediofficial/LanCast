@@ -47,6 +47,8 @@ fn main() {
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_fs::init())
         .setup(|app| {
             let peer_registry = Arc::new(PeerRegistry::new());
             let group_manager = Arc::new(RwLock::new(GroupManager::new()));

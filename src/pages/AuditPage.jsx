@@ -83,7 +83,6 @@ export default function AuditPage() {
         <ClipboardList size={18} className="text-brand-400" />
         <div>
           <h1 className="text-base font-bold text-surface-100">Audit Log</h1>
-          <p className="text-2xs text-surface-500">{auditEvents.length} events this session</p>
         </div>
       </div>
 

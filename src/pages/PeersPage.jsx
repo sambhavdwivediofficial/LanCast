@@ -26,7 +26,6 @@ export default function PeersPage() {
         <div className="flex-1">
           <h1 className="text-base font-bold text-surface-100">Peers</h1>
           <p className="text-2xs text-surface-500">
-            {peers.length} broadcasting · {publicGroups.length} public groups
           </p>
         </div>
       </div>

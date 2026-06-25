@@ -87,7 +87,7 @@ export default function ProfilePage() {
         </AnimatePresence>
 
         <AnimatePresence>
-          {step >= 2 && (
+          {step >= 1 && (
             <motion.p
               key="tagline"
               initial={{ opacity: 0, y: 8 }}
@@ -100,7 +100,7 @@ export default function ProfilePage() {
           )}
         </AnimatePresence>
 
-        <AnimatePresence>
+        {/* <AnimatePresence>
           {step >= 3 && (
             <motion.div
               key="features"
@@ -123,10 +123,10 @@ export default function ProfilePage() {
               ))}
             </motion.div>
           )}
-        </AnimatePresence>
+        </AnimatePresence> */}
 
         <AnimatePresence>
-          {step >= 4 && (
+          {step >= 1 && (
             <motion.div
               key="form"
               initial={{ opacity: 0, y: 12, scale: 0.97 }}
@@ -196,7 +196,7 @@ export default function ProfilePage() {
       </div>
 
       <AnimatePresence>
-        {step >= 4 && (
+        {step >= 1 && (
           <motion.footer
             key="footer"
             initial={{ opacity: 0, y: 10 }}

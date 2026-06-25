@@ -287,6 +287,7 @@ const useAppStore = create((set, get) => ({
     }),
 
   bootstrapListeners: () => {
+    if (!window.__TAURI_INTERNALS__) return;
     const store = useAppStore.getState();
 
     listen("peer_discovered", (e) => {
