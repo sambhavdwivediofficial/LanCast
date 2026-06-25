@@ -26,7 +26,9 @@ export default function App() {
       <AppShell>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/chat" element={<ChatPage />} /> 
           <Route path="/chat/:peerId" element={<ChatPage />} />
+          <Route path="/group" element={<GroupPage />} /> 
           <Route path="/group/:groupId" element={<GroupPage />} />
           <Route path="/peers" element={<PeersPage />} />
           <Route path="/notifications" element={<NotificationPage />} />

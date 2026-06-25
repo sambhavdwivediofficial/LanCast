@@ -148,6 +148,7 @@ export default function ProfilePage() {
                     ref={inputRef}
                     type="text"
                     className="input-base pr-12"
+                    style={{ background: "#11101044", border: "1px solid #515154" }} 
                     placeholder="Your name…"
                     value={name}
                     maxLength={15}
@@ -212,8 +213,7 @@ export default function ProfilePage() {
                     key={l.label}
                     type="button"
                     onClick={() => openLink(l.href)}
-                    title={l.label}
-                    className="p-1.5 rounded-lg text-surface-600 hover:text-surface-300 hover:bg-surface-800 transition-colors"
+                    className="p-1.5 rounded-lg text-surface-600 hover:text-surface-100 hover:bg-surface-850 transition-colors"
                   >
                     <l.icon size={15} />
                   </button>

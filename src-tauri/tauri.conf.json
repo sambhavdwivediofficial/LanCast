@@ -24,7 +24,8 @@
         "transparent": false,
         "alwaysOnTop": false,
         "skipTaskbar": false,
-        "focus": true
+        "focus": true,
+        "devtools": false
       }
     ],
     "security": {
