@@ -109,7 +109,7 @@ export default function EmojiPicker({ onSelect, disabled = false }) {
               overflow: "hidden",
             }}
           >
-            <div className="flex items-center gap-2 px-3 pt-3 pb-2 border-b border-surface-800">
+            {/* <div className="flex items-center gap-2 px-3 pt-3 pb-2 border-b border-surface-800">
               <Search size={13} className="text-surface-500 flex-shrink-0" />
               <input
                 type="text"
@@ -124,7 +124,7 @@ export default function EmojiPicker({ onSelect, disabled = false }) {
                   <X size={12} />
                 </button>
               )}
-            </div>
+            </div> */}
 
             {!search && (
               <div className="flex items-center gap-0.5 px-2 py-1.5 border-b border-surface-800">
