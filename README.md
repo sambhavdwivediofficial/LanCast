@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="public/LanCast.png" alt="LANCAST Logo" width="90" height="90" />
+<img src="public/icon.png" alt="LANCAST Logo" width="90" height="90" />
 
 # LANCAST
 
-> **Work in Progress** — *LANCAST is under active development. This repository is public for early access and community feedback. A stable release is coming soon.*
+> **Work in Progress** — *LANCAST is under active development. This repository is public for early access and feedback's. A stable release is coming soon.*
 
 **Broadcast on LAN. Encrypted. Instant. Traceless.**
 

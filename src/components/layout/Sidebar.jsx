@@ -10,7 +10,7 @@ import Tooltip from "./Tooltip";
 import useAppStore from "@store/appStore";
 import { useKillSwitch } from "@hooks/useSession";
 import { invoke } from "@tauri-apps/api/core";
-import logo from "/logo.png";
+import logo from "/icon.png";
 
 const NAV_ITEMS = [
   { id: "home",          path: "/",              icon: Home,          label: "Home" },
@@ -208,7 +208,7 @@ export default function Sidebar() {
           {!collapsed ? (
             <>
               <div className="flex items-center gap-2">
-                <img src={logo} alt="LANCAST" className="w-11 h-11 rounded-lg flex-shrink-0" />
+                <img src={logo} alt="LANCAST" className="w-10 h-9 rounded-lg flex-shrink-0" />
                 <span className="text-lg font-extrabold text-white tracking-wide select-none">
                   LANCAST
                 </span>
@@ -230,7 +230,7 @@ export default function Sidebar() {
               <img
                 src={logo}
                 alt="LANCAST"
-                className="absolute w-9 h-9 rounded-lg pointer-events-none opacity-100 group-hover:opacity-0 transition-opacity duration-150"
+                className="absolute w-10 h-9 rounded-lg pointer-events-none opacity-100 group-hover:opacity-0 transition-opacity duration-150"
               />
               <ChevronRight
                 size={22}

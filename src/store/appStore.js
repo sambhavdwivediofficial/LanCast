@@ -9,6 +9,7 @@ const useAppStore = create((set, get) => ({
   peers: {},
   conversations: {},
   groups: {},
+  hiddenGroups: new Set(),
   notifications: [],
   auditEvents: [],
   broadcasting: false,
@@ -35,8 +36,7 @@ const useAppStore = create((set, get) => ({
 
   setName: (name) => set({ identity: { name } }),
 
-  setSidebarCollapsed: (v) =>
-    set((s) => ({ ui: { ...s.ui, sidebarCollapsed: v } })),
+  setSidebarCollapsed: (v) => set((s) => ({ ui: { ...s.ui, sidebarCollapsed: v } })),
 
   setActivePage: (page, params = {}) =>
     set((s) => ({
@@ -53,7 +53,6 @@ const useAppStore = create((set, get) => ({
 
   setBroadcasting: (v) => set({ broadcasting: v }),
   setBroadcastConfirmed: (v) => set({ broadcastConfirmed: v }),
-
   startSession: () => set({ sessionStart: Date.now() }),
 
   addPeer: (peer) =>
@@ -68,6 +67,8 @@ const useAppStore = create((set, get) => ({
       return { peers };
     }),
 
+  clearAllPeers: () => set({ peers: {} }),
+
   getPeerList: () => Object.values(useAppStore.getState().peers),
 
   addMessage: (peerId, message) =>
@@ -81,8 +82,7 @@ const useAppStore = create((set, get) => ({
         stats: {
           ...s.stats,
           messagesReceived: s.stats.messagesReceived + 1,
-          bytesTransferred:
-            s.stats.bytesTransferred + (message.content?.length ?? 0),
+          bytesTransferred: s.stats.bytesTransferred + (message.content?.length ?? 0),
         },
       };
     }),
@@ -95,10 +95,7 @@ const useAppStore = create((set, get) => ({
           ...s.conversations,
           [peerId]: [...conv, { ...message, fromSelf: true }],
         },
-        stats: {
-          ...s.stats,
-          messagesSent: s.stats.messagesSent + 1,
-        },
+        stats: { ...s.stats, messagesSent: s.stats.messagesSent + 1 },
       };
     }),
 
@@ -109,9 +106,7 @@ const useAppStore = create((set, get) => ({
       return {
         conversations: {
           ...s.conversations,
-          [peerId]: conv.map((m) =>
-            m.id === messageId ? { ...m, status } : m
-          ),
+          [peerId]: conv.map((m) => (m.id === messageId ? { ...m, status } : m)),
         },
       };
     }),
@@ -123,9 +118,7 @@ const useAppStore = create((set, get) => ({
       return {
         conversations: {
           ...s.conversations,
-          [peerId]: conv.map((m) =>
-            m.id === messageId ? { ...m, status: "seen" } : m
-          ),
+          [peerId]: conv.map((m) => (m.id === messageId ? { ...m, status: "seen" } : m)),
         },
       };
     }),
@@ -134,11 +127,46 @@ const useAppStore = create((set, get) => ({
     set((s) => ({
       groups: {
         ...s.groups,
-        [group.groupId]: { ...group, messages: s.groups[group.groupId]?.messages ?? [] },
+        [group.groupId]: {
+          ...group,
+          messages: s.groups[group.groupId]?.messages ?? [],
+          createdByMe: group.createdByMe ?? s.groups[group.groupId]?.createdByMe ?? false,
+          joined: group.joined ?? s.groups[group.groupId]?.joined ?? false,
+        },
       },
     })),
 
   removeGroup: (groupId) =>
+    set((s) => {
+      const groups = { ...s.groups };
+      delete groups[groupId];
+      return { groups };
+    }),
+
+  hideGroup: (groupId) =>
+    set((s) => {
+      const hidden = new Set(s.hiddenGroups);
+      hidden.add(groupId);
+      return { hiddenGroups: hidden };
+    }),
+
+  unhideGroup: (groupId) =>
+    set((s) => {
+      const hidden = new Set(s.hiddenGroups);
+      hidden.delete(groupId);
+      return { hiddenGroups: hidden };
+    }),
+
+  clearGroupMessages: (groupId) =>
+    set((s) => {
+      const group = s.groups[groupId];
+      if (!group) return s;
+      return {
+        groups: { ...s.groups, [groupId]: { ...group, messages: [] } },
+      };
+    }),
+
+  deleteGroupEverywhere: (groupId) =>
     set((s) => {
       const groups = { ...s.groups };
       delete groups[groupId];
@@ -154,7 +182,10 @@ const useAppStore = create((set, get) => ({
           ...s.groups,
           [groupId]: {
             ...group,
-            messages: [...(group.messages ?? []), { ...message, id: message.id ?? crypto.randomUUID() }],
+            messages: [
+              ...(group.messages ?? []),
+              { ...message, id: message.id ?? crypto.randomUUID() },
+            ],
           },
         },
       };
@@ -175,7 +206,12 @@ const useAppStore = create((set, get) => ({
   addNotification: (notification) =>
     set((s) => ({
       notifications: [
-        { ...notification, id: notification.id ?? crypto.randomUUID(), readAt: null, createdAt: now() },
+        {
+          ...notification,
+          id: notification.id ?? crypto.randomUUID(),
+          readAt: null,
+          createdAt: now(),
+        },
         ...s.notifications,
       ],
     })),
@@ -211,7 +247,10 @@ const useAppStore = create((set, get) => ({
       });
     }, 3000);
     set((s) => ({
-      typingStates: { ...s.typingStates, [key]: { peerId, name, groupId, timeout } },
+      typingStates: {
+        ...s.typingStates,
+        [key]: { peerId, name, groupId, timeout },
+      },
     }));
   },
 
@@ -228,7 +267,10 @@ const useAppStore = create((set, get) => ({
 
   addTransfer: (transfer) =>
     set((s) => ({
-      activeTransfers: { ...s.activeTransfers, [transfer.transferId]: transfer },
+      activeTransfers: {
+        ...s.activeTransfers,
+        [transfer.transferId]: transfer,
+      },
     })),
 
   updateTransferProgress: (transferId, receivedChunks, totalChunks) =>
@@ -238,7 +280,12 @@ const useAppStore = create((set, get) => ({
       return {
         activeTransfers: {
           ...s.activeTransfers,
-          [transferId]: { ...t, receivedChunks, totalChunks, progress: receivedChunks / totalChunks },
+          [transferId]: {
+            ...t,
+            receivedChunks,
+            totalChunks,
+            progress: receivedChunks / totalChunks,
+          },
         },
       };
     }),
@@ -252,7 +299,10 @@ const useAppStore = create((set, get) => ({
           ...s.activeTransfers,
           [transferId]: { ...t, status: "complete", data },
         },
-        stats: { ...s.stats, filesTransferred: s.stats.filesTransferred + 1 },
+        stats: {
+          ...s.stats,
+          filesTransferred: s.stats.filesTransferred + 1,
+        },
       };
     }),
 
@@ -267,6 +317,7 @@ const useAppStore = create((set, get) => ({
       peers: {},
       conversations: {},
       groups: {},
+      hiddenGroups: new Set(),
       notifications: [],
       auditEvents: [],
       broadcasting: false,
@@ -291,6 +342,7 @@ const useAppStore = create((set, get) => ({
     const store = useAppStore.getState();
 
     listen("peer_discovered", (e) => {
+      if (!useAppStore.getState().broadcasting) return;
       store.addPeer(e.payload);
       store.addAuditEvent({
         kind: "peer_joined",
@@ -314,6 +366,7 @@ const useAppStore = create((set, get) => ({
     });
 
     listen("message_received", (e) => {
+      if (!useAppStore.getState().broadcasting) return;
       const { peerId, messageId, content, timestamp, isSystem } = e.payload;
       store.addMessage(peerId, {
         id: messageId,
@@ -339,6 +392,7 @@ const useAppStore = create((set, get) => ({
     });
 
     listen("group_message_received", (e) => {
+      if (!useAppStore.getState().broadcasting) return;
       const { groupId, messageId, senderName, senderId, content, timestamp, isSystem } = e.payload;
       store.addGroupMessage(groupId, {
         id: messageId,
@@ -352,10 +406,7 @@ const useAppStore = create((set, get) => ({
     });
 
     listen("group_invite_received", (e) => {
-      store.addNotification({
-        type: "invite",
-        ...e.payload,
-      });
+      store.addNotification({ type: "invite", ...e.payload });
     });
 
     listen("group_member_joined", (e) => {
@@ -373,6 +424,11 @@ const useAppStore = create((set, get) => ({
         detail: `Joined via invite from ${inviterName}`,
         timestamp,
       });
+    });
+
+    listen("group_deleted", (e) => {
+      const { groupId } = e.payload;
+      useAppStore.getState().deleteGroupEverywhere(groupId);
     });
 
     listen("screenshot_attempt", (e) => {
@@ -411,9 +467,13 @@ const useAppStore = create((set, get) => ({
     });
 
     listen("broadcast_status", (e) => {
-      set({ broadcasting: e.payload.active });
-      if (e.payload.active) {
+      const active = e.payload.active;
+      set({ broadcasting: active });
+      if (active) {
         store.setDiscoveryActive(true);
+      } else {
+        store.setDiscoveryActive(false);
+        store.clearAllPeers();
       }
     });
 

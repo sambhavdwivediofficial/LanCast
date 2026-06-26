@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { invoke } from "@tauri-apps/api/core";
 import { Shell, ArrowRight, Linkedin, Globe, Github, ShieldCheck, Zap, Lock } from "lucide-react";
 import useAppStore from "@store/appStore";
-import logo from "/logo.png";
+import logo from "/image.png";
 
 const FEATURES = [
   { icon: ShieldCheck, text: "End-to-end encrypted with AES-256-GCM" },
@@ -80,8 +80,7 @@ export default function ProfilePage() {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="flex items-center -gap-20 mb-8"
             >
-              <img src={logo} alt="LANCAST" className="w-14 h-14" />
-              <span className="text-4xl font-extrabold text-white tracking-wide">ANCAST</span>
+              <img src={logo} alt="LANCAST" className="w-200 h-24" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -204,23 +203,23 @@ export default function ProfilePage() {
             transition={{ delay: 0.3 }}
             className="flex flex-col items-center gap-2 pb-6 relative z-10"
           >
-            <p className="text-2xs text-surface-600">Crafted by</p>
+            <p className="text-2xs text-surface-300">Crafted by</p>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-surface-400">{CREATOR.name}</span>
+              <span className="text-xs font-semibold text-surface-100">{CREATOR.name}</span>
               <div className="flex items-center gap-1">
                 {CREATOR.links.map((l) => (
                   <button
                     key={l.label}
                     type="button"
                     onClick={() => openLink(l.href)}
-                    className="p-1.5 rounded-lg text-surface-600 hover:text-surface-100 hover:bg-surface-850 transition-colors"
+                    className="p-1.5 rounded-lg text-surface-500 hover:text-surface-100 hover:bg-surface-850 transition-colors"
                   >
                     <l.icon size={15} />
                   </button>
                 ))}
               </div>
             </div>
-            <p className="text-2xs text-surface-700">Apache 2.0 · Open Source</p>
+            <p className="text-2xs text-surface-400">Apache 2.0 · Open Source</p>
           </motion.footer>
         )}
       </AnimatePresence>
