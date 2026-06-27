@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 
-export default function Tooltip({ children, content, side = "right", delay = 300, disabled = false }) {
+export default function Tooltip({ children, content, side = "right", delay = 10, disabled = false }) {
   const [visible, setVisible] = useState(false);
   const [pos, setPos] = useState({ top: 0, left: 0 });
   const triggerRef = useRef(null);

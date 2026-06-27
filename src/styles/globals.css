@@ -309,8 +309,7 @@ a {
   }
 
   .chat-input-area {
-    @apply flex flex-col gap-2 p-4 border-t border-surface-800 bg-surface-900/50;
-    backdrop-filter: blur(8px);
+    @apply flex flex-col gap-2 p-2 border-surface-800;
   }
 
   .online-dot {

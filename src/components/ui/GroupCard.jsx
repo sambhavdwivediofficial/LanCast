@@ -94,6 +94,9 @@ export default function GroupCard({ group, index = 0, onPeersPage = false }) {
           </button>
         );
       }
+    if (onPeersPage && isCreator) {
+      return null;
+    }
       return (
         <div className="relative flex-shrink-0" ref={menuRef}>
           <button
@@ -226,13 +229,8 @@ export default function GroupCard({ group, index = 0, onPeersPage = false }) {
         {renderMenu()}
       </div>
 
-      {isCreator && (
-        <p className="text-2xs text-surface-600 leading-relaxed">
-          You created this group · Open from Groups page
-        </p>
-      )}
       {onPeersPage && isCreator && (
-        <p className="text-2xs text-surface-700 italic">You own this group</p>
+        <p className="text-2xs text-surface-500 italic">You own this group</p>
       )}
     </motion.div>
   );

@@ -30,7 +30,7 @@ export default function PeersPage() {
 
   return (
     <div className="page">
-      <div className="page-header">
+      <div className="page-header" style={{ background: "#0605051b", }} >
         <Zap size={18} className="text-brand-400" />
         <div className="flex-1">
           <h1 className="text-base font-bold text-surface-100">Peers</h1>

@@ -172,21 +172,31 @@ function GroupChat({ group }) {
     if (!broadcasting) return;
     const text = input.trim();
     if (!text && pendingFiles.length === 0) return;
-
+  
     if (text) {
       const messageId = crypto.randomUUID();
+      const timestamp = Date.now();
       setInput("");
+      if (inputRef.current) {
+        inputRef.current.style.height = "auto";
+      }
+  
+      try {
+        await invoke("send_group_message", {
+          payload: { groupId: group.groupId, content: text, messageId },
+        });
+      } catch {}
+  
       addGroupMessage(group.groupId, {
         id: messageId,
         content: text,
         senderName: identity.name,
-        timestamp: Date.now(),
+        timestamp,
         fromSelf: true,
-      });
-      await invoke("send_group_message", {
-        payload: { groupId: group.groupId, content: text, messageId },
+        status: "sent",
       });
     }
+  
     setPendingFiles([]);
     inputRef.current?.focus();
   }, [input, pendingFiles, group.groupId, identity.name, addGroupMessage, broadcasting]);
@@ -235,9 +245,9 @@ function GroupChat({ group }) {
 
   return (
     <div className="page">
-      <div className="page-header">
-        <button type="button" onClick={() => navigate("/group")} className="p-1.5 rounded-lg text-surface-500 hover:text-surface-300 hover:bg-surface-800 transition-colors">
-          <ArrowLeft size={16} />
+      <div className="page-header" style={{ background: "#0605051b", }}>
+        <button type="button" onClick={() => navigate("/group")} className="p-1.5 mr-2 -ml-4 rounded-lg text-surface-500 hover:text-surface-100 hover:bg-surface-900 transition-colors">
+          <ArrowLeft size={20} />
         </button>
         <div className="flex items-center gap-2 flex-1 min-w-0">
           {group.isPrivate
@@ -246,8 +256,8 @@ function GroupChat({ group }) {
           <div className="min-w-0">
             <h1 className="text-sm font-bold text-surface-100 truncate">{group.name}</h1>
             <div className="flex items-center gap-1">
-              <Users size={10} className="text-surface-600" />
-              <span className="text-2xs text-surface-600">
+              <Users size={10} className="text-surface-400" />
+              <span className="text-2xs text-surface-400">
                 {group.memberCount ?? group.members?.length ?? 0} members
               </span>
             </div>
@@ -259,9 +269,9 @@ function GroupChat({ group }) {
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
-              className="p-1.5 rounded-lg text-surface-500 hover:text-surface-300 hover:bg-surface-800 transition-colors"
+              className="p-1.5 rounded-lg text-surface-500 hover:text-surface-100 hover:bg-surface-900 transition-colors"
             >
-              <MoreHorizontal size={16} />
+              <MoreHorizontal size={20} />
             </button>
             <AnimatePresence>
               {menuOpen && (
@@ -339,13 +349,18 @@ function GroupChat({ group }) {
             ))}
           </div>
         )}
-        <div className="flex items-end gap-2">
-          <EmojiPicker onSelect={(e) => { setInput((v) => v + e); inputRef.current?.focus(); }} disabled={!broadcasting} />
+        <div className="flex items-end gap-1">
+          <div className="flex items-center mb-2 justify-center w-8 h-8 rounded-lg text-surface-500 hover:text-surface-300 hover:bg-surface-800 transition-colors flex-shrink-0 disabled:opacity-40">
+            <EmojiPicker 
+              onSelect={(e) => { setInput((v) => v + e); inputRef.current?.focus(); }} 
+              disabled={!broadcasting} 
+            />
+          </div>
           <button
             type="button"
             onClick={handleFilePick}
             disabled={pendingFiles.length >= MAX_FILES || !broadcasting}
-            className="flex items-center justify-center w-8 h-8 rounded-lg text-surface-500 hover:text-surface-300 hover:bg-surface-700 transition-colors flex-shrink-0 disabled:opacity-40"
+            className="flex items-center mb-2 justify-center w-8 h-8 rounded-lg text-surface-500 hover:text-surface-300 hover:bg-surface-700 transition-colors flex-shrink-0 disabled:opacity-40"
           >
             <Paperclip size={16} />
           </button>
@@ -355,11 +370,11 @@ function GroupChat({ group }) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
+              style={{ background: "#11101044", border: "1px solid #515154" }} 
               placeholder={broadcasting ? `Message ${group.name}…` : "Start broadcasting to send messages…"}
               disabled={!broadcasting}
               rows={1}
               className="input-base resize-none w-full disabled:opacity-50"
-              style={{ minHeight: 40, maxHeight: 120 }}
               onInput={(e) => {
                 e.target.style.height = "auto";
                 e.target.style.height = Math.min(e.target.scrollHeight, 120) + "px";
@@ -370,9 +385,9 @@ function GroupChat({ group }) {
             type="button"
             onClick={handleSend}
             disabled={(!input.trim() && pendingFiles.length === 0) || !broadcasting}
-            className="flex items-center justify-center w-9 h-9 rounded-xl bg-brand-600 text-white flex-shrink-0 hover:bg-brand-500 disabled:opacity-40 transition-all"
+            className="flex items-center justify-center mb-2 w-10 h-10 rounded-lg bg-brand-800 text-white flex-shrink-0 hover:bg-brand-500 disabled:opacity-40 transition-all"
           >
-            <Send size={15} />
+            <Send size={20} />
           </button>
         </div>
       </div>
@@ -422,11 +437,10 @@ export default function GroupPage() {
 
   return (
     <div className="page">
-      <div className="page-header">
+      <div className="page-header" style={{ background: "#0605051b", }}>
         <Users size={18} className="text-brand-400" />
         <div className="flex-1">
           <h1 className="text-base font-bold text-surface-100">Groups</h1>
-          <p className="text-2xs text-surface-500">{visibleGroups.length} groups</p>
         </div>
         <button
           type="button"

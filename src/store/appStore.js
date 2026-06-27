@@ -394,6 +394,8 @@ const useAppStore = create((set, get) => ({
     listen("group_message_received", (e) => {
       if (!useAppStore.getState().broadcasting) return;
       const { groupId, messageId, senderName, senderId, content, timestamp, isSystem } = e.payload;
+      const myName = useAppStore.getState().identity.name;
+      if (senderName === myName) return;
       store.addGroupMessage(groupId, {
         id: messageId,
         senderId,
@@ -433,18 +435,33 @@ const useAppStore = create((set, get) => ({
 
     listen("screenshot_attempt", (e) => {
       const { peerName, context, timestamp } = e.payload;
+    
       store.addNotification({
         type: "screenshot_blocked",
         actor: peerName,
         context,
         timestamp,
       });
+    
       store.addAuditEvent({
         kind: "screenshot_blocked",
         actor: peerName,
         detail: `Screenshot attempt in ${context}`,
         timestamp,
       });
+    
+      const state = useAppStore.getState();
+      const activeGroup = state.ui.activeGroup;
+      if (activeGroup) {
+        store.addGroupMessage(activeGroup, {
+          content: `Screen Blocked. Taken by ${peerName}`,
+          timestamp,
+          fromSelf: false,
+          isSystem: true,
+          isScreenshot: true,
+          screenshotBy: peerName,
+        });
+      }
     });
 
     listen("file_transfer_init", (e) => {

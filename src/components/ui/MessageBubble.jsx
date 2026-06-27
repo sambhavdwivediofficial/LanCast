@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Check, CheckCheck, Copy, ChevronDown, ChevronUp, AlertTriangle, Camera } from "lucide-react";
+import { Check, CheckCheck, Copy, ChevronDown, ChevronUp, Camera } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import FilePreview from "./FilePreview";
@@ -18,7 +18,7 @@ export default function MessageBubble({ message, fromSelf }) {
   const [copied, setCopied] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  const { content, timestamp, status, isSystem, isDanger, isScreenshot, screenshotBy, files } = message;
+  const { content, timestamp, status, isSystem, isScreenshot, screenshotBy, files } = message;
 
   const handleCopy = useCallback(async () => {
     if (!content) return;
@@ -81,7 +81,7 @@ export default function MessageBubble({ message, fromSelf }) {
       initial={{ opacity: 0, y: 6, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.18 }}
-      className={`group relative flex flex-col gap-1 ${fromSelf ? "items-end" : "items-start"}`}
+      className={`group relative flex items-end gap-1 ${fromSelf ? "flex-row-reverse" : "flex-row"}`}
     >
       <div className={fromSelf ? "message-bubble-out" : "message-bubble-in"}>
         {files && files.length > 0 && (
@@ -116,9 +116,7 @@ export default function MessageBubble({ message, fromSelf }) {
         <button
           type="button"
           onClick={handleCopy}
-          className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-lg hover:bg-surface-800 mt-0.5"
-          style={fromSelf ? { alignSelf: "flex-end" } : { alignSelf: "flex-start" }}
-          title="Copy"
+          className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-lg hover:bg-surface-800 flex-shrink-0 mb-0"
         >
           <AnimatePresence mode="wait">
             {copied

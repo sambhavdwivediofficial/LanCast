@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Home, MessageSquare, Users, Bell, Radio,
   Zap, ChevronLeft, ChevronRight, ShieldAlert,
-  ClipboardList,
 } from "lucide-react";
 import Tooltip from "./Tooltip";
 import useAppStore from "@store/appStore";
@@ -18,7 +17,6 @@ const NAV_ITEMS = [
   { id: "group",         path: "/group",         icon: Users,         label: "Groups" },
   { id: "peers",         path: "/peers",         icon: Zap,           label: "Peers" },
   { id: "notifications", path: "/notifications", icon: Bell,          label: "Notifications" },
-  { id: "audit",         path: "/audit",         icon: ClipboardList, label: "Audit Log" },
 ];
 
 function NavItem({ item, collapsed, isActive, onClick }) {
@@ -197,7 +195,7 @@ export default function Sidebar() {
     <motion.nav
       animate={{ width: collapsed ? 64 : 180 }}
       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-      className="sidebar flex-shrink-0"
+      className="sidebar flex-shrink-0 bg-surface-950"
       style={{ minWidth: collapsed ? 64 : 180 }}
     >
       <div className="flex flex-col h-full">
