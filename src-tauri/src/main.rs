@@ -17,12 +17,15 @@ mod screenshot;
 mod session_kill;
 
 use audit::logger::AuditLogger;
+use crypto::session::SessionRegistry;
 use discovery::multicast::DiscoveryService;
 use groups::manager::GroupManager;
 use network::peer::PeerRegistry;
 use network::tcp::TcpService;
 use screenshot::ScreenshotGuard;
-use crypto::session::SessionRegistry;
+
+#[cfg(target_os = "windows")]
+use std::os::windows::process::CommandExt;
 
 pub struct AppState {
     pub peer_registry: Arc<PeerRegistry>,
@@ -37,6 +40,34 @@ pub struct AppState {
     pub session_start: std::time::Instant,
 }
 
+fn configure_firewall() {
+    #[cfg(target_os = "windows")]
+    {
+        let rules = [
+            ("LANCAST UDP IN",  "UDP", "in",  "45678"),
+            ("LANCAST TCP IN",  "TCP", "in",  "45679"),
+            ("LANCAST UDP OUT", "UDP", "out", "45678"),
+            ("LANCAST TCP OUT", "TCP", "out", "45679"),
+        ];
+
+        for (name, proto, dir, port) in &rules {
+            let _ = std::process::Command::new("netsh")
+                .args([
+                    "advfirewall", "firewall", "add", "rule",
+                    &format!("name={name}"),
+                    &format!("protocol={proto}"),
+                    &format!("dir={dir}"),
+                    &format!("localport={port}"),
+                    "action=allow",
+                    "enable=yes",
+                    "profile=any",
+                ])
+                .creation_flags(0x08000000)
+                .output();
+        }
+    }
+}
+
 fn main() {
     let filter = EnvFilter::try_from_default_env()
         .unwrap_or_else(|_| EnvFilter::new("lancast=info,warn"));
@@ -44,6 +75,8 @@ fn main() {
     fmt().with_env_filter(filter).with_target(false).compact().init();
 
     info!("LANCAST starting");
+
+    configure_firewall();
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())

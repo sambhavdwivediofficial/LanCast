@@ -98,7 +98,7 @@ export default function MessageBubble({ message, fromSelf }) {
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
-            className="flex items-center gap-1 text-2xs text-brand-400 mt-1 hover:text-brand-300 transition-colors"
+            className="flex items-center gap-1 text-2xs text-brand-400 mt-1 -mb-5 hover:text-brand-300 transition-colors"
           >
             {expanded ? <><ChevronUp size={11} /> Show less</> : <><ChevronDown size={11} /> Show more</>}
           </button>
