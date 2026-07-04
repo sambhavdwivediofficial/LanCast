@@ -219,7 +219,7 @@ export default function ProfilePage() {
                 ))}
               </div>
             </div>
-            <p className="text-2xs text-surface-400">Apache 2.0 · Open Source</p>
+            <p className="text-2xs text-surface-400">MIT License · Open Source</p>
           </motion.footer>
         )}
       </AnimatePresence>

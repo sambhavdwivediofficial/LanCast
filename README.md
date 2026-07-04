@@ -63,7 +63,6 @@ Built for environments where privacy is not a feature but a requirement — boar
 | 📁 | **File Transfer** | Send any file type up to 100MB in chunked, encrypted streams |
 | 📡 | **Broadcast Mode** | Announce your presence on the network — you control when you're visible |
 | 🔔 | **Real-time Notifications** | Live invite notifications with one-tap accept/reject |
-| 🕶️ | **Dark-First UI** | Minimal, full-screen dark interface — no clutter, no distractions |
 
 </div>
 
@@ -178,7 +177,7 @@ Contributions are welcome. Please open an issue before submitting a pull request
 
 ## License
 
-Licensed under the [Apache License 2.0](LICENSE).
+Licensed under the [MIT License](LICENSE).
 
 ---
 
