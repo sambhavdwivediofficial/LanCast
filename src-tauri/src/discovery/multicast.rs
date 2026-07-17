@@ -203,8 +203,8 @@ impl DiscoveryService {
         socket.set_reuse_port(true)?;
         socket.set_nonblocking(true)?;
         socket.set_multicast_ttl_v4(1)?;
-        // socket.set_multicast_loop_v4(false)?;
-        socket.set_multicast_loop_v4(true)?;
+        socket.set_multicast_loop_v4(false)?;
+        // socket.set_multicast_loop_v4(true)?;
 
         let bind_addr = SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, MULTICAST_PORT);
         socket.bind(&bind_addr.into())?;
