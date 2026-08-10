@@ -4,7 +4,7 @@
 
 # LANCAST
 
-> **Work in Progress** — *LANCAST is under active development. This repository is public for early access and feedback's. A stable release is coming soon.*
+> *LANCAST is under active development. This repository is public for early access and feedback's. A stable release is coming soon.*
 
 **Broadcast on LAN. Encrypted. Instant. Traceless.**
 
